@@ -1,0 +1,30 @@
+digraph 
+{
+0 [shape = plaintext, label = "bit"];
+1 [shape = plaintext, label = "<id>"];
+1 -> 0
+2 [shape = plaintext, label = "a"];
+3 [shape = plaintext, label = "<id>"];
+3 -> 2
+4 [shape = plaintext, label = "<parameter>"];
+4 -> 1
+4 -> 3
+5 [shape = plaintext, label = "bit"];
+6 [shape = plaintext, label = "<id>"];
+6 -> 5
+7 [shape = plaintext, label = "b"];
+8 [shape = plaintext, label = "<id>"];
+8 -> 7
+9 [shape = plaintext, label = "<parameter>"];
+9 -> 6
+9 -> 8
+10 [shape = plaintext, label = "<parameters>"];
+10 -> 4
+10 -> 9
+11 [shape = plaintext, label = "x"];
+12 [shape = plaintext, label = "<id>"];
+12 -> 11
+13 [shape = plaintext, label = "<abs>"];
+13 -> 10
+13 -> 12
+}

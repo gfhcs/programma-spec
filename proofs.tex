@@ -1,0 +1,47 @@
+\chapter{Proofs}
+
+\section{Binary bijection}\label{proof:binary_bijection}
+
+Claim: For every $n \in \setN$
+
+\[[b] = \sum\limits_{i = 0}^{n-1} 2^i \cdot b_i \]
+
+is a bijection from $\setB^n$ to $\setN_{<2^ n}$
+
+Proof by induction on $n \in \setN$.
+
+Base case: Let $n = 0$. Then:
+
+\[ \setB^n = 	\{ \epsilon \}\]
+
+and	
+
+\[  [\epsilon] = \sum\limits_{i = 0}^{-1} 2^i \cdot \epsilon_i = 0 < 1 = 2^n\]
+
+Induction step: Let $[.]$ be a bijection to $\setN_{<2^ n}$ for an arbitrary but fixed $n \in \setN$.
+
+Then every element $b \in \setB^{n+1}$ is displayable as
+
+\[b = r \circ a \]
+
+where $a \in \setB$ and $r \in \setB^n$, so that
+
+\[[b] := \sum\limits_{i = 0}^{n} 2^i \cdot b_i  = \left(\sum\limits_{i = 0}^{n-1} 2^i \cdot b_i\right) + 2^n \cdot a\]
+
+If $a = 0$ then
+
+\[[b] = \sum\limits_{i = 0}^{n-1} 2^i \cdot b_i = [r]\]
+
+So, according to the induction hypothesis, by adjusting $r$ we can hit each element of $\setN_{<2^n}$ exactly once and no image can be outside this set.
+
+If $a = 1$ then
+
+\[[b] = \left(\sum\limits_{i = 0}^{n-1} 2^i \cdot b_i\right) + 2^n = [r] + 2^n\]
+
+So, according to the induction hypothesis, by adjusting $r$ we can hit each element of $\{n \in \setN \mid 2^n \leq n < 2^{n+1}\}$ exactly once and no image can be outside this set.
+
+This shows that by applying $[.]$ to every element of $\setB^{n+1}$ we hit every element of $\setN_{<2^{n+1}}$ exactly once and never hit a natural number outside this set.  
+
+\qed
+
+\todo{We should proove the unambiguity of the grammar!}

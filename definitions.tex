@@ -1,0 +1,221 @@
+\chapter{Definitions}
+
+
+We rely on elementary set theory and predicate logic here. Anything above will be defined now:
+
+\section{General definitions} 
+
+
+Let $M$ be a set.
+\begin{itemize}
+\item Abbreviation: For a predicate $p(x)$ we define: \[ \exists^1 x \in M: \: p(x) \quad : \equiv \quad \exists x \in M:\:(p(x) \:  \wedge \: \forall x' \in M : \: p(x') \leftrightarrow x' = x)\]
+\item $\setB := \lbrace 0, 1 \rbrace$ -- The set of \define{bits}.
+\item $\setN$ -- The natural numbers, including $0$.
+\item $\setN_{<k} := \lbrace n \in \setN \mid n < k \rbrace$
+\item $\setN_{\leq k} := \lbrace n \in \setN \mid n \leq k \rbrace$
+\end{itemize} 
+
+Let $s$ be a mathematical statement. We define:
+
+\[bin(s) := \begin{cases} 0 & \neg s \\ 1 & s\end{cases}\]
+
+\section{Sequences}
+
+
+Let $M$ be a set.
+
+The set $M^l$ of all \define{sequences} of length $l$ over $M$ is defined as
+
+\[M^l := \lbrace s \mid s: \setN_{< l} \rightarrow M \rbrace. \]
+
+The \define {length} of $s\in M^l$ is defined as $\vert s \vert  := length(s) := l$
+
+Abbreviation:
+
+\[s_i \quad := \quad s(i) \]
+
+The only element of $M^0$ is written as $\epsilon$ and is called the \define{empty sequence}.
+
+The set $M^\ast$ of all sequences is defined as
+
+\[  M^\ast \quad := \quad \bigcup_{l \in \setN}  M^l\]
+
+An object $x$ is said to be an element of $s \in M^\ast$ if 
+
+\[ x \in s \quad : \equiv \quad \exists i \in \setN_{<\vert s \vert} : \; s_i = x.\] 
+
+$x$ is then called the \define{$i$-th element} of $s$.
+
+Applying a function $f: M \rightarrow N$ to a sequence $s \in M^l$ is defined as
+
+\[f(s) \quad := \quad \lbrace (i, n) \mid i \in \setN_{<l} \; \wedge \; f(s_i) = n\rbrace \in N^l\] 
+
+Concatenation of two sequences $ s \in M^k$, $ t \in M^l$ is defined as
+
+\[ s t \quad := \quad s \circ t \quad := \quad f: \setN_{< k+l} \rightarrow M, \;f(s)=
+\begin{cases}
+s_i , & i<k \\
+t_{i-k}, & i \geq k
+\end{cases}
+\]
+
+If $s t$ contains at least one element, then $\epsilon$ is omitted in this representation.
+
+Abbreviation:
+
+\[ s_0 , ... , s_{l-1} :=
+\begin{cases}
+   \epsilon, & l< 1 \\
+   s_0 , & l = 1 \\
+   s_ 0 , ... , s_{l-2} \circ s_{l-1}, & l > 1
+\end{cases}
+\] 
+
+For $b \in \setB^n$ and $n \in \setN$ we define:
+
+\[[b] := \sum\limits_{i = 0}^{n-1} 2^i \cdot b_i \]
+
+Since this function is a bijection\footnote{Proof in section  \ref{proof:binary_bijection}} we can define $bin_n : \setN \rightarrow \setB^n$ as its inversion.
+
+For a number $x \in \setN$ and $m := min\{n \in \setN \mid \exists b \in \setB^n : [b] = x \} $ we define: 
+
+	\[bin(x) := bin_m(x)\]
+
+\section{Trees}
+
+Let $L$ be a set. The set $\setT{L}$ of \define{trees over $L$} is defined as follows:
+Let $l \in L$ be arbitrary.
+\begin{enumerate}
+\item Then $(l, \epsilon) \in \setT{L}$
+\item Let $c \in \setT{L}^\ast$. Then $(l, c) \in \setT{L}$ if, and only if, $t(l, c)$, where
+\[t : L \times \setT{L}^\ast, t(l, c) : \equiv \forall i \in c : t(i)\]
+\end{enumerate}
+
+The second condition ensures that a tree is finite.
+
+Let $t \in \setT{L}$. 
+
+\begin{itemize}
+\item The set $n(t)$ of \define{nodes} of this tree is defined as 
+\[n : L \times \setT{L}^\ast, n(l, c) := \{ (l,c) \} \cup \bigcup n(c) \]
+
+\item Let $i = (l, c)$. We define:
+
+\begin{itemize}
+\item The \define{label} of i: $l(i) := l$
+\item The \define{children} of i: $c(i) := c$
+\item $i$ being a \define{leaf}: $leaf(i) : \equiv  c = \epsilon$
+\end{itemize}
+
+\item For two nodes $i, j \in n(t)$, $i$ being the \define{father} of $j$ and $j$ being the \define {$n$-th child} of $i$ is defined as 
+\[i \stackrel{t}{\rightarrow} j \quad : \equiv \quad c(i)(n) = j\]
+
+\item For an integer $n  \in \setN$ we define \[i [n]  \quad := \quad c(i)(n)\] 
+\end{itemize} 
+
+\section{Syntax}\label{sec:syntax}
+
+Programma syntax is given as a context free grammar consisting of the following sets:
+\begin{itemize}
+\item $N$ -- The set of \define {non-terminal symbols}. It contains all left hand sides of all production rules given in this specification and is a superset of $\{c' \mid \exists c, k : (c, k, c') \in R\}$
+\item $\setA$ -- The \define {alphabet}. It contains all symbols displayable as a two-dimensional glyph.
+\item $T := N_T \times \setA^ \ast$ -- The set of \define{tokens}.\footnote{For $N_T$ see chapter \ref{chp:lex}}.
+\item $P$ -- The set containing all production rules of this specification.
+\end{itemize}
+\medskip 
+A \define{production rule} is denoted as $a ::= b$ and states that the \define{left hand side} $a \in N$ \define{produces} a sequence $b \in (N \cup T)^ \ast$ of symbols that form the \define{right hand side} of the rule which means that $a$ may be rewritten by $b$ and $b$ may be rewritten by $a$.
+
+Throughout the specification the following abbreviations are used for $b, c, d  \in (N \cup T)^\ast$:
+\begin{itemize}
+\item $a   ::=   b | c$ is defined as     $a   ::=   b   \wedge a   ::=   c$
+\item $a   ::=   b (c|d) e$ is defined as $a   ::=   bce \wedge a   ::=   bde$
+\item $a   ::=   b [c] d$ is defined as   $a   ::=   bcd \wedge a   ::=   bd$
+\end{itemize}
+
+Furthermore the following rules apply:
+
+\begin{itemize}
+\item Sequences of alphabet symbols will often be \lit{highlighted} for clarity.
+\item The specification makes use of several \define{special symbols}:
+\begin{itemize}
+\item \any -- A visible symbol.
+\item \invisible -- An invisible symbol.
+\end{itemize}
+\end{itemize}
+\bigskip 
+
+A \define{program} is a sequence $p \in \setA^\ast$.
+
+A \define{syntax tree} $S_c(p) \in \setS' := \setT{N \cup T \cup \{ \epsilon \}}$ for a program $p$ and a syntactic category $c \in N$  satisfies the following conditions:
+\begin{enumerate}
+\item $l(S_c(p)) = c$
+\item $\forall i \in n(S_c(p)) : l(i) \in T \vee l(i) ::= l(c(i))$
+\item $lw(S_c(p)) = tokenize(p)$ (see chapter \ref{chp:lex})
+\end{enumerate}
+
+where the \define {leaf word} of a node is defined as \[ lw(i)  :=  \begin{cases} l(i) & leaf(i) \\ lw(i[0]) \circ ... \circ lw(i[n]) & \vert c(i) \vert = n + 1\end{cases}\]
+
+If no particular category is given, the syntax tree of a program $p$ is to be thought of as
+
+\[S(p) := S_{\langle program \rangle} (p)\]
+
+For $a \in N$ and $b \in T^\ast$ we define that $b$ is \define{producible} by $a$ ($a \leadsto b $) if and only if there is a syntax tree $S_a(b)$.
+
+From now on the specification refers to a fixed but arbitrary program $p$.
+
+If $\neg(\langle program \rangle \leadsto p)$ then $p$ is called \define{syntactically invalid}.
+Otherwise there is not more than one\footnote{See section  \ref{sec:grammar_unamb} for formal proof} syntax tree and $p$ is called \define{syntactically valid}.
+
+\bigskip
+
+With the help of the definitions 
+\begin{itemize}
+
+\item $ R:=\{ \input{R.txt} \}$
+\bigskip
+\item $
+a_1 : \setS' \rightarrow  \setS',  a_1(l, c) :=  \begin{cases} (l', a_1(c)) & \exists k \in K \cap l(c) : (l, k, l') \in R\\
+(t, \epsilon) & l = (n, t) \in T \\
+ (l, a_1(c)) & otherwise \\ \end{cases}$
+\bigskip
+\item $filter : \setS'^\ast \rightarrow \setS'^\ast,  filter(s) :=  \begin{cases} \epsilon & s = \epsilon \\
+								 filter(s_1, ... , s_{\vert s \vert - 1}) & l(s_0) \in K \\
+					  s_0 \circ (filter(s_1, ... , s_{\vert s \vert - 1}) & otherwise \end{cases}$
+\bigskip
+\item $a_2 : \setS' \rightarrow  \setS',  a_2(l, c) :=  (l, a_2(filter(c))$
+\bigskip
+\item $leaf_a(i) : \equiv l(i) \in \{\langle bits \rangle, \langle symbols \rangle, \langle id \rangle\} $
+\bigskip
+\item $essential(i) : \equiv leaf_a(i) \vee \exists j \in c(i) : essential(j) $
+\bigskip
+\item $i \twoheadrightarrow j  :\equiv  j = c(i)(\min \{n \in \setN \mid  \forall j' \in c(i) : essential(j') \Rightarrow j' = i[n]\})$
+\bigskip
+\item $E := \{ \input {E.txt}\}$
+
+\bigskip
+\item $a_3 : \setS' \rightarrow  \setS',  a_3(i) := \begin{cases} i & leaf_a(i) \\ a_3(j) & \neg leaf_a(i) \wedge i \twoheadrightarrow j  \wedge l(i) \notin E \\ (l(i), a_3(c(i))) & otherwise\end{cases}$
+\end{itemize}
+we can define the \define{abstract syntax tree} for program $p$ and a syntactic category $c \in N$ as
+\[A_c(p) := a_3(a_2(a_1(S_c(p)))) \]
+
+In analogy to $S$, we define
+
+\[A (p) := A_\langle program \rangle\]
+
+We define $\setS := n(im A) \subset\setT{N \cup \setA^\ast} \subset \setS'$
+
+\section{Semantics}\label{sec:semantics}
+
+Let $M$ be a set.
+An $M$-\define{context} is a function $C: \setS \rightarrow \wp (M)$. We define: 
+
+\begin{itemize}
+\item $\eval C x m :\equiv m \in C(x)$
+\item For $x \in \setS$ and $y \in M$:
+\[C[x := y] : \setS \rightarrow M, C[x := y](i) := \begin{cases} y & i = x \\ C(i) & otherwise\end {cases}\]
+\end{itemize}
+
+An \define{inference rule} of the form \irule P C where $P$ and $C$ are sets of mathematical statements is to be understood as 
+\[\bigwedge_P p \; \Rightarrow \; \bigwedge_C c\]
+
+$P$ and $C$ will be denoted without set brackets or commata between their elements.

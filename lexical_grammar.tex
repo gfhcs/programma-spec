@@ -1,0 +1,75 @@
+\chapter{Lexical grammar} \label{chp:lex}
+The EI consumes a program $p \in A^\ast$ from left to right by splitting it up into tokens, which is defined by the sets
+\[\begin{array}{@{}ccl}
+LS  & := & \lbrace ?, Cmt, Smb, Bit, Wrd \rbrace \\
+N_T & := & \lbrace \langle comment \rangle , \langle bits \rangle ,  \langle symbols \rangle ,  \langle keyword \rangle,  \langle id \rangle  \rbrace \\
+K   & := & \lbrace \input{keywords.txt} \rbrace \\
+D   & := & \lbrace w \in K \mid \vert w\vert=1 \rbrace \\
+D_I   & := & \lbrace \lit{'}, \lit{●}, \lit{○} \rbrace \\    
+\end{array}\]
+and the function
+\[lex : LS \times  A^\ast \times A^\ast  \rightarrow  N_T \times A^\ast \times A^\ast ,\]
+\[\begin{array}{@{}lrrccc}
+lex (?,   & \epsilon, & \lit{'} \circ cr)    & := & lex (Smb, \epsilon,  cr) \\
+lex (Smb, & t,        & \lit{'} \circ cr)    & := & (\langle symbols \rangle, t, cr) \\
+lex (Smb, & t,        & c \circ cr)          & := & lex (Smb, t \circ c, cr)                                                             & c \neq \lit{'}\\
+ \\
+lex (?,   & \epsilon, & \lit{(*} \circ cr)   & := & lex (Cmt, \epsilon,  cr) \\
+lex (Cmt, & t,        & \lit{*)} \circ cr)   & := & (\langle comment \rangle, t, cr) \\
+lex (Cmt, & t,        & c \circ c' \circ cr) & := & lex (Cmt, t \circ c, c' \circ cr)                                                    & c \circ c' \neq \lit{*)}\\
+ \\
+lex (?,   & \epsilon, & \lit{●} \circ cr)    & := & lex (Bit, \lit{●},  cr) \\
+lex (?,   & \epsilon, & \lit{○} \circ cr)    & := & lex (Bit, \lit{○},  cr) \\
+lex (Bit, & t,        & \lit{●} \circ cr)    & := & lex (Bit, t \circ\lit{●},  cr) \\
+lex (Bit, & t,        & \lit{○} \circ cr)    & := & lex (Bit, t \circ \lit{○},  cr) \\
+lex (Bit, & t,        &               cs)    & := & (\langle bits \rangle, t, cs)                                                        & cs(1) \notin \lbrace \lit{○}, \lit{●} \rbrace \\
+ \\
+lex (?,   & \epsilon, & d \circ c' \circ cr) & := & \begin{cases}  lex (?, \epsilon,  c' \circ cr)           & \invisible \leadsto d \\
+							                                       (\langle keyword \rangle, d, c' \circ cr) & d \in D    \\
+																   lex (Wrd, d, cr)                          & otherwise \end{cases}     & d \circ c' \neq \lit{(*}\\
+\\
+lex (?,   & \epsilon, & d                  ) & := & (n(c), d, \epsilon)                                                                  & \neg(\invisible \leadsto d)\\
+\\
+lex (Wrd, & t,        & c \circ cr)          & := & \begin{cases} (n(t), t,  cr)           & \invisible \leadsto c \\
+                                                                  (n(t), t,  c \circ cr)   & c \in D \cup D_I           \\
+																  lex (Wrd, t \circ c, cr) & otherwise \end{cases}      \\
+\\
+lex (Wrd, & t,        & \epsilon)            & := & (n(t), t, \epsilon)
+\end{array}\]
+
+where $\vert d \vert = \vert c \vert = \vert c' \vert = 1 \;\wedge\; cs \in A^\ast \;\wedge\; d \notin D_I $ and
+
+\[ n(t) := \begin{cases} \langle keyword \rangle & t \in K \\
+                         \langle id \rangle      & t \notin K   \end{cases}\]
+
+For $p \in A^\ast$ and $lex(?, \epsilon, p) = (l, t, r)$ we define:
+
+\[\begin{array}{@{}lcl}
+label(p) & := & l \\
+token(p) & := & (l, t) \\
+rest(p)  & := & r
+\end{array}\]
+
+The function $tokenize : A^\ast \rightarrow T^\ast$, that is defined by
+
+\[
+tokenize(p) := \begin{cases} \epsilon                         & \invisible \leadsto p \vee p =\epsilon                       \\
+							 tokenize(rest(p))                & label(p) = \langle comment \rangle \\
+							 token(p) \circ tokenize(rest(p)) & otherwise                          \end{cases}
+\]
+
+converts a stream of characters into a stream of tokens.
+
+For $i \in \lbrace\any\rbrace^\ast, s\in\lbrace \any, \invisible \rbrace^\ast,b \in \lbrace \lit{○}, \lit{●}  \rbrace^\ast, k \in K$ we define:
+
+\[\begin{array}{@{}lcl}
+
+\langle id \rangle      &::=& (\langle id \rangle, i) \\
+
+\langle symbols \rangle &::=& (\langle symbols \rangle, s) \\
+
+\langle bits \rangle    &::=& (\langle bits \rangle, b) \\
+
+k                       &::=& (\langle keyword \rangle, k) \\
+
+\end{array}\]

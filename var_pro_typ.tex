@@ -1,0 +1,227 @@
+\chapter{Variables, procedures \& types}
+
+\section {Definitions}
+
+\bigskip
+
+A \define{variable} is an element of $Var := Id \times Types$. The first component of a variable tuple is called the \define{variable} name and the second one is called \define{variable type}.
+A variable $v$ is often denoted as $name : type$.
+ 
+\bigskip
+
+A \define{procedure} $p \in Procedures$ consists of
+\begin{itemize}
+\item $p.rtype \in Types$ -- The \define{return type} of the procedure.
+\item $p.atype \in Types$ -- The \define{parameter type} of the procedure.
+\item $p.sem: States \times p.atype \rightarrow States \times rtype$ -- The semantics function of the procedure: The function takes the current state\footnote{For the definition of \textbf{state} see section \ref{ei_definition}} and an argument values. It returns the state after the execution of the procedure and its return value.
+\end{itemize}
+
+\medskip
+
+
+
+A \define{type} is an element of the set $Types$. A $t \in Types$ consists of
+\begin{itemize}
+\item $t.ancestors \subseteq Types$ -- The types $t$ is \define{inheriting} from.
+\item $t.public \in Id \rightarrow Procedures$ -- The \define{public members} of $t$.
+\item $t.external \in Id \rightarrow Procedures$ -- The \define{external members} of $t$.
+\item $t.internal \in Id \rightarrow Procedures$ -- The \define{internal members} of $t$.
+\item $t.secret \in Id \rightarrow Procedures$ -- The \define{secret members} of $t$.
+\item $t.range$ -- A superset of possible \define{values of type} $t$.
+\end{itemize}
+
+We will often omit the suffix $.range$.
+
+The set $GTypes$ of \define{generic types} is defined as follows:
+
+\begin{enumerate}
+\item Every $t : Types \rightarrow Types$ is an element of $GTypes$
+\item Every $t : Types \rightarrow GTypes$ is an element of $GTypes$
+\end{enumerate}
+
+For $t \in GTypes$ we denote the value $t(x)$ by $t \langle x\rangle$
+
+An object $v$ having a certain type $t$ is denoted by $v : t \; :\equiv \; v \in t.range$.
+
+We define: $Values := \lbrace v \mid \exists t \in Types : v : t\rbrace$
+
+\section{Procedure types}
+
+For any $t_1, t_2 \in Types$ the statement $t_1 \rightarrow t_2 \in Types$ holds and we define:
+\begin{itemize}
+\item $(t_1 \rightarrow t_2).pc := 0$ 
+\item $(t_1 \rightarrow t_2).p := \epsilon$
+\item $(t_1 \rightarrow t_2).ancestors := \lbrace object \rbrace$
+\item $members(t_1 \rightarrow t_2) = \emptyset$
+\item $(t_1 \rightarrow t_2).range = \lbrace p \in Procedures \mid p.atype = t_1 \wedge p.rtype = t_2  \rbrace$
+\end{itemize}
+
+$t_1 \rightarrow t_2$ is called a \define{procedure type}.
+
+As with variables we will often denote a procedure $p$ with type $t$ as $ p : t$. To ease reading we define that $a \rightarrow b \rightarrow c$ is to be understood as $a \rightarrow (b \rightarrow c)$, so $\rightarrow$ is right-recursive.
+
+\section{Internals}
+
+The \define{methods}/\define{members} of a type $t$ are defined as 
+\[members(t) \quad := \quad t.public \cup t.external \cup t.internal \cup t.secret\]
+
+\section{Inheritance}
+
+Let $s, t \in Types$ be two types. The statement that $s$ \define{inherits}/\define{extends} $t$ is denoted by
+\[s \inherits t\]
+which is true if and only if
+\begin{enumerate}
+\item $t \in s.ancestors$ -- $t$ is one of the ancestors of $s$.
+\item $s.range \subseteq t.range$ -- Every value of type $s$ is also a value of type $t$.
+\end{enumerate}
+
+For any $s, t \in Types$ and $g \in GTypes$ we specify:
+\[ s \inherits t \;\; \Rightarrow \;\; g(s) \inherits g(t)\]
+
+\section{Basic types}
+
+The following base types have to be supported by the EI:
+
+\[void, bit, symbol, object, sequence, exception, device \in Generics\]
+
+\paragraph{void}
+
+\begin{itemize}
+\item $void.ancestors := \emptyset$
+\item $members(void) = \emptyset$
+\item $void.range = \{ 0 \}$ %If the range were empty, you could never call a procedure that expects arguments of this type!
+\end{itemize}
+
+\paragraph{bit}
+
+The type $bit$ represents the basic unit of information:
+
+\begin{itemize}
+\item $bit.ancestors := \emptyset$
+\item $members(bit) = \emptyset$
+\item $bit.range = \mathbb{B}$
+\end{itemize}
+
+\paragraph{symbol}
+
+The type $symbol$ contains all the symbols that are displayable as a two dimensional glyph, which we defined as $T$ in section \ref{sec:syntax}.
+
+\begin{itemize}
+\item $symbol.ancestors := \emptyset$
+\item $members(symbol) = \emptyset$
+\item $symbol.range = T$
+\end{itemize}
+
+Note, that $symbol.range \cap bit.range = \emptyset$.
+
+\paragraph{object}
+
+The great majority of $Values$ is of this type:
+
+\begin{itemize}
+\item $object.ancestors := \emptyset$
+\item $members(object) = \emptyset$
+\item $object.range = \lbrace v \mid \exists t \in Types : v : t \wedge t \triangleright object \rbrace$
+\end{itemize}
+
+\paragraph{sequence}
+
+For any type $t \in Types$ we define:
+
+\begin{itemize}
+\item $sequence<t>.ancestors := \lbrace object \rbrace$
+\item $sequence<t>.public = \lbrace create, length\rbrace$
+\item $sequence<t>.external = sequence<t>.internal = sequence<t>.secret = \emptyset$
+\item $sequence<t>.range = t.range^\ast$
+\end{itemize}
+
+The procedures are defined as follows:
+
+\begin{itemize}
+\item $create.rtype = sequence \langle t \rangle$
+\item $create.atype = void$
+\item $create.sem: States  \rightarrow States \times sequence\langle t \rangle, sem(s) = (s, \epsilon)$
+\end{itemize}
+
+\begin{itemize}
+\item $length.rtype = sequence \langle bit \rangle$
+\item $length.atype = sequence \langle t \rangle$
+\item $length.sem: States \times sequence \langle t \rangle \rightarrow States \times sequence \langle bit \rangle, sem(s, v) = (s,\vert v \vert)$
+\end{itemize}
+
+\paragraph{exception}
+
+Objects of this type are used to signal that $\delta$ is not defined:
+
+\begin{itemize}
+\item $exception.ancestors := \lbrace object \rbrace$
+\item $exception.public = \lbrace create, message\rbrace$
+\item $exception.external = sequence<t>.internal = sequence<t>.secret = \emptyset$
+\item $exception.range = \lbrace 0 \rbrace \times sequence\langle symbol\rangle$
+\end{itemize}
+
+The procedures are defined as follows:
+
+\begin{itemize}
+\item $create.rtype = exception$
+\item $create.atype = sequence\langle symbol\rangle$
+\item $create.sem: States \times sequence\langle symbol\rangle \rightarrow States \times exception,$\[ sem(s, m) = (s, (0,m))\]
+\end{itemize}
+
+
+\begin{itemize}
+\item $message.rtype = sequence\langle symbol\rangle$
+\item $message.atype = exception$
+\item $message.sem: States \times exception \rightarrow States \times sequence\langle symbol\rangle, sem(s, (0, m)) = (s,m)$
+\end{itemize}
+
+
+\paragraph{device}
+
+These values represent the EI's connections to the real world.
+
+
+\begin{itemize}
+\item $device.ancestors := \lbrace object \rbrace$
+\item $members(device) = \emptyset$
+\item $device.range = \lbrace 1 \rbrace \times sequence<bit>$
+\end{itemize}
+
+
+\section{Predefined procedures}
+
+As well as there are predefined types in Programma, there also are some predefined procedures:
+
+\begin{itemize}
+\item $or : bit \rightarrow bit \rightarrow bit$ 
+
+where $or.sem(s, b_1) := (s, or')$ and $or'.sem(s, b_2) := (s, 1 - (b_1 \cdot b_2))$
+
+\item $and : bit \rightarrow bit \rightarrow bit$ 
+
+where $and.sem(s, b_1) := (s, and')$ and $and'.sem(s, b_2) := (s, b_1 \cdot b_2)$
+
+\item $not : bit \rightarrow bit$ 
+
+where $not.sem(s, b) := (s, 1 - b)$
+
+\item $> : sequence \langle bit \rangle \rightarrow sequence \langle bit \rangle \rightarrow bit$ 
+
+where $>.sem(s, b_1) := (s, >')$ and $>'.sem(s, b_2) := (s, bin([b_1] > [b_2]))$
+
+\item $< : sequence \langle bit \rangle \rightarrow sequence \langle bit \rangle \rightarrow bit$ 
+
+where $<.sem(s, b_1) := (s, <')$ and $>'.sem(s, b_2) := (s, bin([b_1] < [b_2]))$
+
+\item $+ : sequence \langle bit \rangle \rightarrow sequence \langle bit \rangle \rightarrow bit$ 
+
+where $+.sem(s, b_1) := (s, +')$ and $+'.sem(s, b_2) := (s, bin([b_1] + [b_2]))$
+
+\item $- : sequence \langle bit \rangle \rightarrow sequence \langle bit \rangle \rightarrow bit$ 
+
+where $-.sem(s, b_1) := (s, -')$ and $-'.sem(s, b_2) := (s, bin([b_1] - [b_2]))$
+
+\item $\& : sequence \langle bit \rangle \rightarrow sequence \langle bit \rangle \rightarrow bit$ 
+
+where $\&.sem(s, b_1) := (s, \&')$ and $\&'.sem(s, b_2) := (s, b_1 \circ b_2)$
+\end{itemize}

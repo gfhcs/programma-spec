@@ -1,0 +1,115 @@
+\chapter{The language} \label{chp:language}
+
+Having put into place all the necessary definitions, we can now specify the actual Programma language:
+
+\section{Type names} \label{sec:type_names}
+
+\begin{bnf}
+
+  <\E{type}> ::= \todo {Specify this!}
+
+\end{bnf}
+
+\todo{Add static rules to assign these phrases the type they refer to!}
+
+\section{Expressions} \label{sec:expressions}
+
+The following grammar specifies how expressions are to be formed:
+
+\begin{bnf}
+
+  <exp>   ::= <eq-check> ["?" <exp> ":" <exp>]
+  
+  <eq-check>  ::= <ty-check> [(\R{$(\langle eq-check \rangle , \lit{=}, \langle eq-pos \rangle) $}{"="} |\R{$(\langle eq-check \rangle , \lit{≠}, \langle eq-neg \rangle) $}{"≠"}) <exp>]
+  
+  <ty-check>  ::= <call> [(\R{$(\langle ty-check \rangle , \lit{$\in$}, \langle ty-pos \rangle) $}{\lit*{$\in$}}|\R{$(\langle ty-check \rangle , \lit*{$\notin$}, \langle ty-neg \rangle) $}{\lit*{$\notin$}}) <type>]
+  
+  <call>  ::= <projection> <call'>  | \R{$(\langle call \rangle , \lit{new}, \langle \E{creation} \rangle) $}{"new"} <id> <call'>
+  
+  <call'> ::= [<projection> <call'>]
+  
+  <projection>  ::= <primitive> <projection'>
+
+  <projection'> ::= [\lit{[} <exp> [":" <exp>] \lit{]} <projection'>]
+
+  <primitive> ::= <bits> | <symbols> | <id> | \R{$(\langle primitive \rangle , \lit{λ}, \langle \E{abs} \rangle) $}{"λ"} <parameters> <block> | \lit{(} <exp> \lit{)}
+  
+  <parameter> ::= <type> <id>
+
+  <parameters> ::= [<parameter> <parameters>]
+
+\end{bnf}
+
+Given a \define{type context } $T : \setS \rightarrow Types$, the \define{static semantics} of these expressions are defined by the following inference rules:
+
+\begin{column}{0.24}
+
+	\irule {\lb i {bits}}{\eval T i bit}
+
+\nextColumn{0.25}
+	
+	\irule {\lb i {symbols}}{\eval T i symbol}
+
+\nextColumn {0.49}
+
+	\irule {\lb i {id} \ws i \rightarrow j \ws \eval T {l(j)} t}{\eval T i t}
+
+\end{column}
+
+\begin{column}{0.3}
+\irule{\lb i {parameter} \\ \eval T {i[0]} t}{\eval T i t}
+
+\nextColumn {0.37}
+
+\irule{\lb i {parameters} \\ \eval T {i[0]} t \ws  \eval T {i[1]} t'}{\eval T i t \rightarrow t'}
+\nextColumn {0.3}
+
+\end{column}
+
+For $i \in \setS$ with $l(i) \in \{\langle parameter\rangle, \langle parameters\rangle\}$ and a type context $T$ we define $e(T) : \setS \rightarrow (\setS \rightarrow \wp (Types))$ by
+
+\begin{column}{0.3}
+
+\irule{\lb i {parameter} \\ \eval T {i[0]} t \ws lw(i[1]) = p}{e(T)(i) = T[p := t]}
+
+\todo{Guess we should make sure that there aren't two equally named parameters! (Cause that's nonsense.)}
+
+\irule{\lb i {parameters} \\ \eval e(T)(i[0]) = T' \ws e(T')(i[1]) = T''}{e(T)(i) = T''}
+
+\end{column}
+
+
+\begin{column}{0.3}
+
+\irule{\lb i {abs} \ws }{\eval T i {t \rightarrow t'}}
+
+\todo{We need to assign parameters their types!}
+\irule{\lb i {abs} \ws \eval T {i[0]} t \ws \eval {T[]} {i[1]} t'} {\eval T i {t \rightarrow t'}}
+
+\end{column}
+
+
+%Calls work like that: Let $x$ be an instance of type $t$, $m$ a method of $t$ and $a : u$ and argument for $m$. Then the call
+%
+%\[ x \; m \; a\]
+%
+%could be typed as 
+%\[x : (t \rightarrow \alpha) \rightarrow \alpha\]
+%\[m : (t \rightarrow u \rightarrow u\]
+
+
+\section{Statements} \label{sec:statements}
+
+
+
+
+\[t (S, \rightarrow_2 , s_0) := (S, \{ s  \stackrel {A} {\rightarrow_1}  s'  \mid A \neq \emptyset \wedge  (\forall \alpha \in A : s \stackrel {\alpha} {\rightarrow_2}  s') \}, s_0)\]
+
+
+
+\begin{bnf}
+
+  <\E{block}> ::= \todo {Specify this!}
+
+\end{bnf}
+

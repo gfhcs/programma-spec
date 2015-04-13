@@ -1,0 +1,34 @@
+\chapter{Introduction}
+
+The reader will certainly ask why it should be necessary to introduce another programming
+language. This question shall be answered here.
+
+As computer science and computers themselves improved over the decades the
+programming languages evolved to very sophisticated tools allowing us to very comfortably
+tell a computer what is to be done.
+
+One major feature that most programming languages have is their universality: The fact
+that they are Turing complete ensures that we can describe any computational task using
+these languages.
+
+The problem Programma aims to solve is the lack of universality of a very different kind:
+Programmers put a great deal of effort into writing code that is robust, fast and
+serviceable. Having accomplished this task however, there remains an unpleasant
+uncertainty about the program code: For how long will it keep its value. How long will it
+take until no one is able to execute this code either because of lack of knowledge or
+because of lack of a suitable runtime environment?
+
+To sum these questions up one can say that the ``time universality'' of code written in these
+languages is not given. The code is not ``eternal''. It works here and now. But it probably
+won't work tomorrow at another place because technology changes.
+
+The goal of the Programma project is to provide this ``eternal universality''. It tries to
+achieve it by reducing the assumptions made concerning the runtime environment: The
+``computer'' is abstracted away and replaced by a more general ``executive instance''.
+Programma does not rely on a 32 bit or a 64 bit architecture nor does it require the
+availability of a network connection or a hard drive and the like. Programma is designed to avoid
+unnecessary requirements or determinations about the executive instance and its abilities
+which causes known concepts like bytes, files, or a console to be abandoned.
+
+It remains to be seen if this ambitious approach to programming will be performant or
+even feasible and if it is suited to provide ``eternal universality'' for the programs we write.

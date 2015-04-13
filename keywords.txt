@@ -1,0 +1,2 @@
+\lit{$\in$}, \lit{$\notin$}, \lit{(}, \lit{)}, \lit{:}, \lit{?}, \lit{[}, \lit{]}, \lit{=}, \lit{≠}, \\
+&&\mskip 10mu \lit{new}, \lit{λ}

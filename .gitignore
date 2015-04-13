@@ -1,0 +1,14 @@
+*.directory
+*.aux
+*.log
+*.toc
+*.synctex.gz
+*.out
+*.tks
+*.d
+*.o
+*.a
+*.pidb
+/*.pdf
+/git-gui.sh
+/keywords.txt

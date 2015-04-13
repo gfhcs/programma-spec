@@ -1,0 +1,56 @@
+Operator ranking:
+
+  ?
+  =, ≠
+  or
+  and
+  not
+  ∈, ∉
+  <, >
+  +, -
+  &        (Sequence concatenation)
+  new, call
+  [], ++, --
+  <bits>, <symbols>, <id>, fn
+  
+  
+  
+Grammar:
+
+  <exp>   ::= <eq-check> [? <exp> : <exp>]
+  <eq-check>  ::= <or> [(= | ≠) <exp>]
+  <or>  ::= <and> [or <exp>]
+  <and>  ::= <not> [and <exp>]
+  <not>  ::= not <exp> | <ty-check>
+  <ty-check>  ::= <comparison> [(∈ | ∉) <id>]
+  <comparison> ::= <offset> [(< | >) <offset>]
+  <offset>  ::= <concat> [(+ | -) <exp>] //Attention: Must be left recursive!
+  <concat>  ::= <call> [& <exp>]
+  <call>  ::= <afix> <call'>  | new <id> <call'>  //Attention: Must be left recursive!
+  
+  <call'> ::= [<afix> <call'>]
+  <afix>  ::= <primitive> <afix'> | <primitive> ++ | <primitive> -- | ++ <primitive> | -- <primitive>
+  <afix'> ::= ['[' <exp> ']' <afix'>]
+  <primitive> ::= <bits> | <symbols> | <id> | λ <parameters> <block> | '(' <exp ')'
+  
+  <parameter> ::= <type> <id>
+  <parameters> ::= [<parameter> <parameters>]
+  
+  
+  
+Slimmer grammar (as much as possible is done as an instance call):
+
+Grammar:
+
+  <exp>   ::= <eq-check> [? <exp> : <exp>]
+  <eq-check>  ::= <ty-check> [(= | ≠) <exp>]
+  <ty-check>  ::= <call> [(∈ | ∉) <id>]
+  <call>  ::= <afix> <call'>  | new <id> <call'>  //Attention: Must be left recursive!
+  
+  <call'> ::= [<afix> <call'>]
+  <afix>  ::= <primitive> <afix'>
+  <afix'> ::= ['[' <exp> [ : <exp> ] ']' <afix'>]
+  <primitive> ::= <bits> | <symbols> | <id> | λ <parameters> <block> | '(' <exp ')'
+  
+  <parameter> ::= <type> <id>
+  <parameters> ::= [<parameter> <parameters>]

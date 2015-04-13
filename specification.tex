@@ -1,0 +1,139 @@
+\documentclass[12pt]{scrreprt}
+
+\usepackage{graphicx} % used for the Programma logo in the title.
+\usepackage{datetime} % used to retrieve the current month and year.
+\usepackage{titling} % used for creating the title.
+
+\usepackage{amssymb} % used for mathematical symbols
+\usepackage{amsmath} % used for math
+\usepackage{amsfonts} % used for mathematical fonts
+
+\usepackage{textcomp} % used to load fonts that contain special symbols.
+\usepackage{lmodern} % used because it is supposed to look better.
+%\usepackage{setspace} % used for being able to alter spaces.
+%\usepackage{colortbl} % used for coloring tables.
+%\usepackage{ltablex} % used to unite the powers of tablesx and longtable.
+%\usepackage{listings} % used for source code listings.
+%\usepackage[usenames,dvipsnames,svgnames,table]{xcolor} % used for some coloring stuff.
+\usepackage[T1]{fontenc} % used because it is recommended for PDF viewers being able to process strange symbols in the right manner.
+
+%\usepackage[utf8]{inputenc} % enables processing of UTF-8 characters in the latex source code.
+%\usepackage{framed} % used for making frames.
+%\usepackage{mdframed} % used for making fancy frames.
+\usepackage{color} % used for coloring.
+\usepackage[nounderscore]{syntax} % used for BNF grammar rules.
+\usepackage{fontspec}
+\usepackage{courier} % used for something that I forgot.
+\usepackage{hyperref} % used for the link in the foreword and the linked table of contents. To be loaded as one of the last.
+%\usepackage{bookmark}
+
+\def\labelitemii{$\circ$} %Makes the second level bullet sign a circle.
+\renewcommand{\ttdefault}{lmtt}  % Select a latin modern font as the standard typewriter font!
+
+%Title information:
+\title{The Programma Language}
+\subtitle{Version 0.1}
+\author {Gereon Fox}
+\date{}
+
+% Determine character spacing:
+\setlength{\parindent}{0 cm}
+\setlength{\parskip}{0.2 cm}
+
+
+%Setup for the syntax package:
+\setlength{\grammarindent}{5 cm} % Sets the left margin for the right hand sides of production rules.
+
+% How terminals are printed:
+\renewcommand{\ulitleft}{\fontspec{Courier New} \bfseries \color{blue}}
+\renewcommand{\ulitright}{\normalfont}
+
+% Macros for the 'special' terminals:
+\newcommand{\any}{{\color{red}\textbf{$\sigma$} \normalfont}}
+\newcommand{\invisible}{{\color{red}\textbf{$\psi$} \normalfont}}
+
+%This macro is used to replace categories in the syntax tree if they appear around a certain keyword:
+\newcommand{\R}[2]{#2}
+
+%This macro is used to prevent categories in the tree from being replaced:
+\newcommand{\E}[1]{#1}
+
+
+%Macro for TODOs:
+\newcommand{\todo}[1]{\textcolor{red}  {\textbf{TODO: #1}}}
+
+% This is done to indent all production rules:
+\renewcommand{\grammarlabel}[2]{\hspace{1 cm}\synt{#1} \hfill #2}
+
+% This is done to set the spacing for blocks of BNF rules:
+\newenvironment{bnf}{\bigskip \begin{grammar}}{\end{grammar}\bigskip}
+
+
+% This macro is used for terms when they are defined:
+\newcommand{\define}[1]{\textbf{\textit{#1}}}
+
+% These macros are used for the most important sets:
+
+\newcommand{\setB}{\mathbb{B}}
+\newcommand{\setA}{\mathbb{A}}
+\newcommand{\setN}{\mathbb{N}}
+\newcommand{\setT}[1]{\mathbb{T}(#1)}
+\newcommand{\setS}{\mathbb{S}}
+% These macros are used for mathematical proofs in the proofs chapter:
+\newcommand{\qed}{\hfill $\blacksquare$}
+
+
+%These macros are used to typeset inference rules:
+\newcommand{\irule}[2]
+	{\[
+		\frac {
+			\begin{array}{@{}cc}  
+			   \let \n \\ 
+			   \renewcommand{\\}{\vspace{.2cm}\n}
+			   #1
+			\end{array}}
+			  {#2}
+     \] }
+\newcommand{\eval}[3]{#1 \vdash #2 \triangleright #3}
+\newcommand {\ws}{\mskip 25 mu}
+\newcommand {\lb}[2]{l(#1) = \langle #2 \rangle}
+
+
+%This macro is used for inheritance relations:
+\newcommand{\inherits}{\triangleright}
+
+%This macro is used for text columns:
+\newenvironment{column}[1]
+{\begin{minipage}[t]{#1\linewidth}}{\end{minipage} \bigskip\bigskip}
+\newcommand{\nextColumn}[1]{\end{minipage}\begin{minipage}[t]{#1\linewidth}}
+
+\includeonly{language}
+
+\begin{document}
+
+\include{title}
+
+\include{foreword}
+
+\include{introduction}
+
+\todo{Mark partial functions as such (with $\rightharpoonup$)}
+\todo {Replace ``case distinction'' by ``case analysis''!}
+
+\todo {Use the ready-made "proof" package for inference rules/trees!}
+
+\include{definitions}
+
+\include{ex_instance}
+
+\include{var_pro_typ}
+
+\include{lexical_grammar}
+
+\include{language}
+	
+\include{proofs}	
+	
+\todo{Add an index that is to contain at least all defined terms!}	
+	
+\end{document}

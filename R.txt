@@ -1,0 +1,3 @@
+(\langle call \rangle , \lit{new}, \langle \E{creation} \rangle) , (\langle eq-check \rangle , \lit{=}, \langle eq-pos \rangle) , \\{}
+\mskip 52mu (\langle eq-check \rangle , \lit{≠}, \langle eq-neg \rangle) , (\langle primitive \rangle , \lit{λ}, \langle \E{abs} \rangle) , \\{}
+\mskip 52mu (\langle ty-check \rangle , \lit*{$\notin$}, \langle ty-neg \rangle) , (\langle ty-check \rangle , \lit{$\in$}, \langle ty-pos \rangle) 

@@ -1,0 +1,47 @@
+\chapter {The Executive Instance}
+
+\section {Definition} \label{ei_definition}
+
+The \define{Executive Instance} (\define{EI}) is an object of the real world that executes the program according to this specification.
+
+The \define{execution} of the program by the EI is modeled as transforming a start state into an end state.
+
+A \define{state} $s \in States$ consists of
+\begin{itemize}
+\item $s.m: Variables \rightarrow Values$ --- the content of the \define{memory} of the EI.
+\item $s.st \in Statements^\ast$ --- the \define{stack} of statements that are currently being executed.
+\item $s.oc \in \mathbb{N}$ --- the \define{object counter}.
+\item $s.dev \subseteq Id \times \mathbb{B}^\ast $ --- the content of the devices.
+\end{itemize}
+
+The EI operates in several distinct \define{phases} that must be absolved in the given order:
+\begin{enumerate}
+\item \define{Startup} --- This phase starts as soon as the EI becomes active. The EI must carry out whatever necessary for consuming and executing a program.
+\item \define{Consumption} --- The EI now is meant to consume the program it has been given in any form. Exactly one program is to be consumed.
+\item \define {Execution}/\define{Runtime} --- This phase starts as soon as the program has been loaded and the representation of the \define{initial state} has been set up. It lasts until an \define{end state} with an empty stack is reached or an uncaught exception occurs.
+\item \define{Shutdown} --- As soon as execution is finished, the EI discards all resources it holds and ceases any activity.
+\end{enumerate}
+
+The execution phase is modeled by the function
+
+\[\delta: States \rightarrow States, \delta(s) = s'.\]
+
+$\delta$ will be specified by case distinction on $s$. From now on $s$ will represent the current state and $s'$ will represent the state meant to follow $s$.
+
+If the execution is ever ended, the program $p$ is said to have \define{terminated}. Otherwise $p$ is \define{divergent}.
+
+A \define{device} is a facility controlled by the EI that can be used to interact with the real world. The state of a device is represented by a bit sequence that can be referenced under a special \define{device name}. The length of this sequence never changes.
+
+
+During the execution phase exceptions may occur. An \define{exception} is the occurence of a state that is not an end state but for which $\delta$ is not defined. This condition leads to the creation of an \define{exception object} which is a value of the type $exception$. This exception can either be handled\footnote{For the definition of \textbf{handle} see section \ref{exceptions}} or not depending on the given program.
+
+\bigskip
+
+An EI is said is said to be \define{correct} if it fulfills the following requirements:
+
+\begin{enumerate}
+\item If, according to this specification, $p$ diverges \emph{in any way} for a given initial state then the EI must never end the execution with a proper end state.
+\item If, according to this specification, $p$ terminates without an unhandled exception for a given initial state then the EI must reach a proper end state in which the values of all device variables equal the states of all its devices.
+\item If, according to this specification, $p$ terminates with an unhandled exception for a given initial state then the EI must immediately end the execution phase and should report this exception to the real world.
+\end{enumerate}
+

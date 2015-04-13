@@ -1,0 +1,56 @@
+\documentclass[12pt]{scrreprt}
+\usepackage{graphicx}
+\usepackage{datetime}
+\usepackage{titling}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{alltt}
+\usepackage{textcomp}
+\def\labelitemii{$\circ$}
+
+\renewcommand{\ttdefault}{txtt} 
+\usepackage[T1]{fontenc}
+\usepackage{framed}
+\usepackage{mdframed}
+\usepackage{color}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\usepackage{courier}
+\title{The Programma Language}
+\subtitle{Version 0.1}
+\author {Gereon Fox}
+\date{}
+
+\setlength{\parindent}{0 cm}
+\setlength{\parskip}{0.2 cm}
+
+\newcommand{\define}[1]{\textbf{\textit{#1}}}
+
+\definecolor{bluegrey}{RGB}{230,230,255}
+\definecolor{darkergrey}{RGB}{192,192,192}
+
+\includeonly{definitions, lexical_grammar}
+
+\newenvironment{bnf}{\begin{mdframed}[linecolor=darkergrey, backgroundcolor = bluegrey, linewidth = 1 pt, skipabove = 0 cm, skipbelow = 0 cm, innertopmargin = 0 cm, innerbottommargin = 0.2 cm]}{\end{mdframed}}
+
+\newcommand{\pr}[2]{\begin{alltt} \texttt{<\textbf{#1}>   ::=   #2}\end{alltt}}
+
+\newcommand{\terminal}[1]{{\color{blue}#1}}
+\newcommand{\sterminal}[1]{{\color{red}#1}}
+
+\begin{document}
+
+\include{title}
+
+\include{foreword}
+
+\include{introduction}
+
+\include{definitions}
+
+\include{lexical_grammar}
+	
+\end{document}
