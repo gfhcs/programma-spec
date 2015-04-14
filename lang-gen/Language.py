@@ -6,7 +6,7 @@ Created on 13.04.2015
 
 class Language(object):
     '''
-    classdocs
+    Represents a programming language.
     '''
     
     dumpLexerSpec
@@ -42,10 +42,16 @@ class Language(object):
         Constituents
         ConcreteCorrespondence
         
+    def dump(self, target, output):
+        
+        if target == self._target:
+            output.write(self._content)
+            
+    def dumpLexerSpec(self, output):
         
         
-    Snippet
-
+            
+            
     def __init__(self, params):
         '''
         Constructor
