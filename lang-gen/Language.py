@@ -9,51 +9,25 @@ class Language(object):
     Represents a programming language.
     '''
     
-    dumpLexerSpec
-    dumpParserSpec
-    
-    dumpLexer
-    dumpParser
-    
-    
-    ConcreteGrammar
-    
-        attach(Snippet)
-    
-        Production
+    def __init__(self, grammar=None, categories=[]):
+        self._grammar = grammar
+        self._categories = categories
         
-            attach(Snippet)
-        
-            Label
-            Right-Hand-Side
-                Concatenation
-                Alternative
-                Terminal
-                Epsilon
+    def getCategories(self):
+        return iter(self._categories)
     
-            AbstractCorrespondence
+    def setCategories(self, categories):
+        self._categories = categories
     
+    def getConcreteGrammar(self):
+        return self._grammar
+
+    def setConcreteGrammar(self, g):
+        self._grammar = g
+
+    def generateLexicalSpec(self):
     
-    AbstractGrammar
+    def generateLexer(self):
         
-        attach(Snippet)
-    
-        Name
-        Constituents
-        ConcreteCorrespondence
-        
-    def dump(self, target, output):
-        
-        if target == self._target:
-            output.write(self._content)
-            
-    def dumpLexerSpec(self, output):
-        
-        
-            
-            
-    def __init__(self, params):
-        '''
-        Constructor
-        '''
+    def generateParser(self):
         
