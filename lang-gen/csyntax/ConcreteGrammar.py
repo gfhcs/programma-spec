@@ -90,5 +90,15 @@ class ConcreteGrammar(object):
         g.seal()
         
         return g
+    
+    def __str__(self):
+        s = ""
+        prefix = ""
+        
+        for p in self._productions:
+            s += prefix + str(p)
+            prefix = ".\n"
+            
+        return s
         
         
