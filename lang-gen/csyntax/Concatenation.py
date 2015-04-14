@@ -95,3 +95,13 @@ class Concatenation(GrammarExpression):
             return c[0]
         
         return Concatenation(c)
+    
+    def getTerminals(self):
+        for c in self._components:
+            for t in c.getTerminals():
+                yield t
+    
+    def getNonTerminals(self):
+        for c in self._components:
+            for nt in c.getNonTerminals():
+                yield nt

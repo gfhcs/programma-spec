@@ -35,4 +35,11 @@ class Terminal(GrammarExpression):
         
         return Terminal(w) if len(w) == 1 else Keyword(w)
     
+    def getTerminals(self):
+        return iter([self])
+    
+    def getNonTerminals(self):
+        return iter([])
+
+    
 from Keyword import Keyword

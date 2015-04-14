@@ -52,3 +52,9 @@ class NonTerminal(GrammarExpression):
         source.match(">")
         
         return NonTerminal(n)
+    
+    def getTerminals(self):
+        return iter([])
+    
+    def getNonTerminals(self):
+        return iter([self])

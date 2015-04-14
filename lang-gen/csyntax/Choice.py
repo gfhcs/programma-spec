@@ -74,3 +74,12 @@ class Choice(GrammarExpression):
         
         return Choice(a)
     
+    def getTerminals(self):
+        for a in self._alternatives:
+            for t in a.getTerminals():
+                yield t
+    
+    def getNonTerminals(self):
+        for a in self._alternatives:
+            for nt in a.getNonTerminals():
+                yield nt

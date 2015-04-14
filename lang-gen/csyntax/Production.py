@@ -42,3 +42,8 @@ class Production(object):
         
         return Production(name, rhs)
         
+    def getTerminals(self):
+        return self._rhs.getTerminals()
+    
+    def getNonTerminals(self):
+        return self._rhs.getNonTerminals()

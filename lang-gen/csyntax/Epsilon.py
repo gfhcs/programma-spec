@@ -24,3 +24,9 @@ class Epsilon(GrammarExpression):
     def parse(source):
         source.match("ε")
         return Epsilon()
+    
+    def getTerminals(self):
+        return iter([])
+    
+    def getNonTerminals(self):
+        return iter([])
