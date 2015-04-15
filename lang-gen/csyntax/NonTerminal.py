@@ -13,6 +13,8 @@ class NonTerminal(GrammarExpression):
 
     def __init__(self, name):
         self._name = name
+        self._production = None
+        self._isToken = False
 
     def __str__(self):
         return "<{n}>".format(n=self._name)
@@ -38,6 +40,15 @@ class NonTerminal(GrammarExpression):
             raise Exception ("The nonterminal {s} cannot be bound to the production rule {r}, because names don't match!".format(s=self, r=p))
         
         self._production = p
+        
+    def setToToken(self):
+        if self._production is not None:
+            raise Exception ("This non-terminal has already been bound to a production rule!")
+        
+        self._isToken = True
+        
+    def isToken(self):
+        return self._isToken
     
     @staticmethod
     def parse(source):
