@@ -12,3 +12,6 @@
 /*.pdf
 /git-gui.sh
 /keywords.txt
+
+# Python binaries:
+*.pyc
