@@ -36,12 +36,18 @@ programma_grammar.addLexicalReduction(LexicalReduction((None, "?"), ("id", True,
 programma_grammar.addLexicalReduction(LexicalReduction(("id", "?"), ("id", False, True, True, False)))
 programma_grammar.addLexicalReduction(LexicalReduction(("id", "?"), ("id", False, False, False, True)))
 
+
+programma_grammar.parse(
 '''
 
 ''')
 
-programma = Language()
+programma_categories = []
+
+programma = Language(programma_grammar, programma_categories)
+
 
 
 if __name__ == '__main__':
-    pass
+    
+    programma.getLexicalSpec().dump()

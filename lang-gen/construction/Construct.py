@@ -9,10 +9,10 @@ class Construct(object):
     Represents a part of a document describing a programming language.
     '''
 
-    def __init__(self, target):
+    def __init__(self, targets):
         self._constituents = []
         self._parent = None
-        self._target = target
+        self._targets = targets
         
     def addConstituent(self, c, index=-1):
         
@@ -36,12 +36,12 @@ class Construct(object):
     def getParent(self):
         return self._parent
         
-    def getTarget(self):
-        return self._target
+    def getTargets(self):
+        return self._targets
     
     def dump(self, target):
         
-        if self._target != target:
+        if target not in self._targets:
             return
         
         for c in self._constituents:

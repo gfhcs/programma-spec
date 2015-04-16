@@ -23,7 +23,7 @@ class TextSnippet(object):
         
     def dump(self, target):
         
-        if target != self._target:
+        if target not in self._targets:
             return
         
         self.getParent().getFile().write(self._content)

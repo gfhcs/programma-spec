@@ -14,7 +14,7 @@ class GrammarExpression(object):
     def parse(self, source):
         return Choice.parse(source)
     
-    @abc.abstracthmethod
+    @abc.abstractmethod
     def getTerminals(self):
         pass
     

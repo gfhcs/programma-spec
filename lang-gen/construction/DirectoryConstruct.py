@@ -5,14 +5,14 @@ Created on 13.04.2015
 '''
 import os
 
-from construction import Construct.Construct
+from Construct import Construct
 
 class DirectoryConstruct(Construct):
     '''
     Represents a part of a document that consists of a directory.
     '''
 
-    def __init__(self, target, directory):
+    def __init__(self, directory):
         self._dir = directory
         
     def getDirectory(self):
@@ -26,8 +26,6 @@ class DirectoryConstruct(Construct):
     
     def dump(self, target):
         
-        if self._target != target:
-            return
         
         d = self.getFullDirectory()
         

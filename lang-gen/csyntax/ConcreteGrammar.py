@@ -7,6 +7,10 @@ Created on 14.04.2015
 from Keyword import Keyword
 from Production import Production
 
+from util.util import int2bin
+
+import math
+
 class ConcreteGrammar(object):
     '''
     A set of production rules that constitute the concrete semantics of a programming language.
@@ -65,7 +69,32 @@ class ConcreteGrammar(object):
                 except KeyError:
                     nt.setToToken()
 
+        self._computeBinaryMap()
+
         self._sealed = True
+    
+    
+    def _computeBinaryMap(self):
+        
+        self._symbols = set([" ", "\n"])
+        
+        for lr in self._lexicalReductions:
+            
+            s = lr.getLookAhead()
+            
+            if s is not None and s != "?":
+                self._symbols.add(s)
+                
+        for kw in self._keywords:
+            self._symbols.add(kw)
+    
+        self._lexWordLength = int(math.ceil(math.log(len(self._symbols), 2))) + 1
+        
+        i = 0
+        for s in self._symbols:
+            self._binMap[s] = int2bin(i)
+            i += 1
+        
     
     def _cache_lexical(self, reduction):
         if reduction.getFinal():
@@ -103,6 +132,9 @@ class ConcreteGrammar(object):
         
     def getLexicalCategories(self):
         return iter(self._lexicalCategories)    
+    
+    def getLexicalReductions(self):
+        return iter(self._lexicalReductions)
     
     def getProductions(self):
         return iter(self._productions)

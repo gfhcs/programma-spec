@@ -4,11 +4,11 @@ Created on 13.04.2015
 @author: gereon
 '''
 
-from construction import Construct.Construct
+from Construct import Construct
 
 class TextConstruct(Construct):
     '''
-    Represents a part of a document that consists of a directory.
+    Represents a part of a document that consists of text.
     '''
     
     def getFile(self):
@@ -16,7 +16,7 @@ class TextConstruct(Construct):
     
     def dump(self, target):
         
-        if self._target != target:
+        if target not in self._targets:
             return
         
         for c in self._constituents:

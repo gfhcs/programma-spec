@@ -4,8 +4,8 @@ Created on 13.04.2015
 @author: gereon
 '''
 
-from construction import Construct.Construct
-from construction import DirectoryConstruct.DirectoryConstruct
+from Construct import Construct
+from DirectoryConstruct import DirectoryConstruct
 
 class FileConstruct(Construct):
     '''
@@ -28,9 +28,9 @@ class FileConstruct(Construct):
     def getFile(self):
         return self._file
     
-    def dump(self, target):
+    def dump(self, target=None):
         
-        if self._target != target:
+        if target is None or target not in self._targets:
             return
         
         with open(self.getFullPath(), 'w') as self._file:   

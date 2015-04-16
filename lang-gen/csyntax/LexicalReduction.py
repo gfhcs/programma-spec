@@ -63,6 +63,54 @@ class LexicalReduction(object):
     
     def getMustSeeIDSymbol(self):
         return self._mustSeeIDSymbol
+        
+    def __str__(self):
+        
+        cts = self.getCurrentTokenState()
+        currentTokenState = "<{cts}>".format(cts=cts) if cts is not None else "?"
+        
+        prefix = "ε" if cts is None else "t"
+        
+        lookahead = self.getLookahead()
+        
+        rest = "ε" if lookahead is None else ("{lookahead} ∘ cr".format(lookahead) if lookahead != "?" else "cs")
+        
+        app = "" if self.getFinal() else "lex"
+        
+        nts = self.getNewTokenState()
+        newTokenState = "<{nts}>".format(nts=nts) if nts is not None else "?"
+        
+        newPrefix = ""
+        
+        if self.getEmpty():
+            if self.getAppend():
+                newPrefix = "ε" if lookahead is None else (lookahead if lookahead != "?" else "c")
+            else:
+                newPrefix = "ε"
+        else:
+            if self.getAppend():
+                newPrefix = "t" if lookahead is None else ("t ∘ {lookahead}".format(lookahead) if lookahead != "?" else "t ∘ c")
+            else:
+                newPrefix = "t"
+        
+        newRest = "cr" if rest.endsWith("cr") else "cs"
+        
+        condition = ""
+        
+        if self.getMustSeeWhiteSpace():
+            condition = "    ∀ c ∊ W"
+        elif self.getMustSeeIDSymbol():
+            condition = "    ∀ c ∊ C_I"
+        
+        return "lex({currentTokenState}, {prefix}, {rest}) := {app}({newTokenState}, {newPrefix}, {newRest}){condition}".format(currentTokenState=currentTokenState,
+                                                                                                               prefix=prefix,
+                                                                                                               rest=rest,
+                                                                                                               app=app,
+                                                                                                               newTokenState,
+                                                                                                               newPrefix=newPrefix,
+                                                                                                               newRest=newRest,
+                                                                                                               condition=condition)
     
-    
+    def toLaTeX(self):
+        return str(self) # Implement proper LaTeX export of Lexical reductions!
     
