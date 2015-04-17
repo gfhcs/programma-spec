@@ -79,7 +79,7 @@ class LexicalReduction(object):
         
         lookahead = self.getLookahead()
         
-        rest = "ε" if lookahead is None else ("{lookahead} ∘ cr".format(lookahead=lookahead) if lookahead != "?" else "cs")
+        rest = "ε" if lookahead is None else ("{lookahead} ∘ cr".format(lookahead=lookahead) if lookahead != "?" else ("c ∘ cr" if self._consume else "cs"))
         
         app = "" if self.getFinal() else "lex"
         
@@ -107,6 +107,8 @@ class LexicalReduction(object):
             condition = "    ∀ c ∊ W"
         elif self.getMustSeeIDSymbol():
             condition = "    ∀ c ∊ C_I"
+        elif self.getMustSeeKeyWord():
+            condition = "    ∀ c ∊ K"
         
         return "lex({currentTokenState}, {prefix}, {rest}) := {app}({newTokenState}, {newPrefix}, {newRest}){condition}".format(currentTokenState=currentTokenState,
                                                                                                                prefix=prefix,
