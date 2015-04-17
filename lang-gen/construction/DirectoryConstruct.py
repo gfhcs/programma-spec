@@ -4,6 +4,7 @@ Created on 13.04.2015
 @author: gereon
 '''
 import os
+import os.path
 
 from Construct import Construct
 
@@ -21,7 +22,7 @@ class DirectoryConstruct(Construct):
     
     def getFullDirectory(self):
         if isinstance(self.getParent(), DirectoryConstruct):
-            return  self.getParent().getFullDirectory() + self._dir
+            return  os.path.join(self.getParent().getFullDirectory(), self._dir)
         else:
             return self._dir
     

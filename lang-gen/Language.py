@@ -31,7 +31,7 @@ class Language(object):
     
     def _buildLexSpec(self):
                 
-        self._lexicalSpec = FileConstruct("lex_spec_latex", "lexical_grammar.tex")
+        self._lexicalSpec = FileConstruct("lexical_grammar.tex")
         t = TextConstruct()
         self._lexicalSpec.addConstituent(t)
         
@@ -55,7 +55,7 @@ and the function
         t.addConstituent(TextSnippet("lex_spec_latex", lex_spec_intro))
         
         for lr in self._grammar.getLexicalReductions():
-            t.addConstituent(TextSnippet("lex_spec_latex", lr.toLaTeX()))
+            t.addConstituent(TextSnippet(lr.toLaTeX() + "\n"))
         
         
         lex_spec_outro ='''

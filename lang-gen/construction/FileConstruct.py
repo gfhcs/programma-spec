@@ -7,6 +7,8 @@ Created on 13.04.2015
 from Construct import Construct
 from DirectoryConstruct import DirectoryConstruct
 
+import os.path
+
 class FileConstruct(Construct):
     '''
     Represents a part of a document that consists of a directory.
@@ -22,7 +24,7 @@ class FileConstruct(Construct):
     
     def getFullPath(self):
         if isinstance(self.getParent(), DirectoryConstruct):
-            return  self.getParent().getFullDirectory() + self._fileName
+            return  os.path.join(self.getParent().getFullDirectory(), self._fileName)
         else:
             return self._fileName
     
