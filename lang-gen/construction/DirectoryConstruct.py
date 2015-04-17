@@ -13,6 +13,7 @@ class DirectoryConstruct(Construct):
     '''
 
     def __init__(self, directory):
+        super(DirectoryConstruct, self).__init__(None)
         self._dir = directory
         
     def getDirectory(self):

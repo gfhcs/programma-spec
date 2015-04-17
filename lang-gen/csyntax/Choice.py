@@ -4,7 +4,7 @@ Created on 13.04.2015
 @author: gereon
 '''
 
-import GrammarExpression
+from GrammarExpression import GrammarExpression
 
 def _flatten(alternatives):
     newAlternatives = []
@@ -23,6 +23,7 @@ class Choice(GrammarExpression):
     '''
 
     def __init__(self, alternatives):
+        super(self, Choice).__init()
         self._alternatives = _flatten(alternatives)
 
     def __str__(self):

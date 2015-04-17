@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
+encoding//csyntax/GrammarLexer.py=utf8
+encoding//csyntax/LexicalReduction.py=utf8
+encoding//util/util.py=utf8
+encoding/Language.py=utf8
 encoding/main.py=utf8

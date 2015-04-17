@@ -1,3 +1,5 @@
+# coding=utf8
+
 '''
 Created on 15.04.2015
 
@@ -31,23 +33,27 @@ class LexicalReduction(object):
         self._append = append
         self._consume = consume
         self._final = final
+        self._empty = empty
         
         self._mustSeeWhiteSpace = mustSeeWhiteSpace
         self._mustSeeKeyWord = mustSeeKeyWord
         self._mustSeeIDSymbol = mustSeeIDSymbol
         
         
-    def getCurrenTokenState(self):
+    def getCurrentTokenState(self):
         return self._currentTokenState
     
     def getLookahead(self):
         return self._lookahead
     
-    def newTokenState(self):
+    def getNewTokenState(self):
         return self._newTokenState
     
     def getAppend(self):
         return self._append
+    
+    def getEmpty(self):
+        return self._empty
     
     def getConsume(self):
         return self._consume
@@ -73,7 +79,7 @@ class LexicalReduction(object):
         
         lookahead = self.getLookahead()
         
-        rest = "ε" if lookahead is None else ("{lookahead} ∘ cr".format(lookahead) if lookahead != "?" else "cs")
+        rest = "ε" if lookahead is None else ("{lookahead} ∘ cr".format(lookahead=lookahead) if lookahead != "?" else "cs")
         
         app = "" if self.getFinal() else "lex"
         
@@ -89,11 +95,11 @@ class LexicalReduction(object):
                 newPrefix = "ε"
         else:
             if self.getAppend():
-                newPrefix = "t" if lookahead is None else ("t ∘ {lookahead}".format(lookahead) if lookahead != "?" else "t ∘ c")
+                newPrefix = "t" if lookahead is None else ("t ∘ {lookahead}".format(lookahead=lookahead) if lookahead != "?" else "t ∘ c")
             else:
                 newPrefix = "t"
         
-        newRest = "cr" if rest.endsWith("cr") else "cs"
+        newRest = "cr" if rest.endswith("cr") else "cs"
         
         condition = ""
         
@@ -106,7 +112,7 @@ class LexicalReduction(object):
                                                                                                                prefix=prefix,
                                                                                                                rest=rest,
                                                                                                                app=app,
-                                                                                                               newTokenState,
+                                                                                                               newTokenState=newTokenState,
                                                                                                                newPrefix=newPrefix,
                                                                                                                newRest=newRest,
                                                                                                                condition=condition)

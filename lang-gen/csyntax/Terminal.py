@@ -12,6 +12,7 @@ class Terminal(GrammarExpression):
     '''
 
     def __init__(self, word):
+        super(self, Terminal).__init()
         self._word = word
 
     def __str__(self):
@@ -33,6 +34,8 @@ class Terminal(GrammarExpression):
         
         w = source.read().trim('"')
         
+        from Keyword import Keyword
+        
         return Terminal(w) if len(w) == 1 else Keyword(w)
     
     def getTerminals(self):
@@ -42,4 +45,3 @@ class Terminal(GrammarExpression):
         return iter([])
 
     
-from Keyword import Keyword

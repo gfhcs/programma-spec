@@ -9,7 +9,7 @@ class Construct(object):
     Represents a part of a document describing a programming language.
     '''
 
-    def __init__(self, targets):
+    def __init__(self, targets=None):
         self._constituents = []
         self._parent = None
         self._targets = targets
@@ -41,7 +41,7 @@ class Construct(object):
     
     def dump(self, target):
         
-        if target not in self._targets:
+        if target not in self._targets or self._targets is None:
             return
         
         for c in self._constituents:

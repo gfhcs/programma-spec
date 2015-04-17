@@ -8,6 +8,7 @@ Created on 14.04.2015
 
 from csyntax.ConcreteGrammar import ConcreteGrammar
 from csyntax.LexicalReduction import LexicalReduction
+from csyntax.GrammarLexer import GrammarLexer
 from Language import Language
 
 
@@ -39,10 +40,10 @@ programma_grammar.addLexicalReduction(LexicalReduction(("id", "?"), ("id", False
 programma_grammar.addLexicalReduction(LexicalReduction(("id", "?"), ("id", False, False, False, True)))
 
 
-programma_grammar.parse(
+programma_grammar.parsePhrasalGrammar(GrammarLexer(
 '''
 
-''')
+'''))
 
 programma_categories = []
 
@@ -64,4 +65,4 @@ programma = Language(programma_grammar, programma_categories)
 
 if __name__ == '__main__':
     
-    programma.getLexicalSpec().dump()
+    programma.getLexicalSpecification().dump()

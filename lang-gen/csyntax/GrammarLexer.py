@@ -1,3 +1,5 @@
+# coding=utf8
+
 '''
 Created on 13.04.2015
 
@@ -5,6 +7,8 @@ Created on 13.04.2015
 '''
 
 from io import TextIOBase
+
+import StringIO
 
 class GrammarLexer(object):
     '''
@@ -17,7 +21,9 @@ class GrammarLexer(object):
         :param source: The source character stream
         '''
 
-        if not isinstance(source, TextIOBase):
+        if isinstance(source, str):
+            source = StringIO.StringIO(source)
+        elif not isinstance(source, TextIOBase):
             raise Exception("The given source must be a TextIOBase object!")
 
         self._peekC = None

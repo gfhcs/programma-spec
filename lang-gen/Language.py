@@ -1,3 +1,5 @@
+# coding=utf8
+
 '''
 Created on 13.04.2015
 
@@ -113,6 +115,4 @@ k                       &::=& (\langle keyword \rangle, k) \\
 
     def getLexicalSpecification(self):
         return self._lexicalSpec
-        
-    def generateParser(self):
         

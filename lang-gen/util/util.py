@@ -1,3 +1,5 @@
+# coding=utf8
+
 '''
 Created on 16.04.2015
 

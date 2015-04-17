@@ -14,9 +14,9 @@ class TextConstruct(Construct):
     def getFile(self):
         return self.getParent().getFile()
     
-    def dump(self, target):
+    def dump(self, target=None):
         
-        if target not in self._targets:
+        if target is not None and target not in self._targets:
             return
         
         for c in self._constituents:

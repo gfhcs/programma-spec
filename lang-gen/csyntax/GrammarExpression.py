@@ -18,7 +18,7 @@ class GrammarExpression(object):
     def getTerminals(self):
         pass
     
-    @abc.abstracthmethod
+    @abc.abstractmethod
     def getNonTerminals(self):
         pass
     
