@@ -8,7 +8,7 @@ from util.util import int2bin
 
 class Text2Binary(object):
     '''
-    Converts an iterable of unicode characters into an iterable of binary code words for a given proramming language.
+    Converts an iterable of unicode characters into an iterable of binary code words for a given programming language.
     '''
 
     def __init__(self, language, text):
