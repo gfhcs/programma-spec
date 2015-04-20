@@ -50,7 +50,7 @@ programma_categories = []
 programma = Language(programma_grammar, programma_categories)
 
 # We'd like to get the following:
-# Generate a lexical specification
+# Generate a conversion procedure from input text to lexable binary.
 # Generate a lexer
 # Generate a parser
 # Generate a full language specification
