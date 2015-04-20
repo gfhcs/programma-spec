@@ -11,10 +11,10 @@ def int2bin(i, minLength=0):
     b = ""
     
     while i > 0:              
-        b = ('○' if (i % 2) == 0 else '●') + b            
+        b += '○' if (i % 2) == 0 else '●'     
         i /= 2
     
     while len(bin) < minLength:
-        b = '○' + b
+        b += '○'
     
     return b

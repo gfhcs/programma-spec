@@ -95,6 +95,11 @@ class ConcreteGrammar(object):
             self._binMap[s] = int2bin(i)
             i += 1
         
+    def getBinaryMap(self):
+        return self._binMap
+    
+    def getBinaryWordLength(self):
+        return self._lexWordLength
     
     def _cache_lexical(self, reduction):
         if reduction.getFinal():
