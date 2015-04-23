@@ -98,7 +98,7 @@ class ConcreteGrammar(object):
     def getBinaryMap(self):
         return self._binMap
     
-    def getBinaryWordLength(self):
+    def getCodeWidth(self):
         return self._lexWordLength
     
     def _cache_lexical(self, reduction):
